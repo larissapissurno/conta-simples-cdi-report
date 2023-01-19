@@ -119,14 +119,19 @@ async function PdfOutput() {
     },
   });
 
-  await fs.writeFile("out.pdf", result.content, "utf8", function (err) {
-    if (err) {
-      console.log("An error occured while writing JSON Object to File.");
-      return console.log(err);
-    }
+  await fs.writeFile(
+    "demonstrativo-cdi.pdf",
+    result.content,
+    "utf8",
+    function (err) {
+      if (err) {
+        console.log("An error occured while writing JSON Object to File.");
+        return console.log(err);
+      }
 
-    console.log("JSON file has been saved.");
-  });
+      console.log("JSON file has been saved.");
+    }
+  );
 }
 
 PdfOutput();
