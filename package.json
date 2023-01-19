@@ -1,0 +1,27 @@
+{
+  "name": "conta-simples-cdi-report",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/larissapissurno/conta-simples-cdi-report.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/larissapissurno/conta-simples-cdi-report/issues"
+  },
+  "homepage": "https://github.com/larissapissurno/conta-simples-cdi-report#readme",
+  "dependencies": {
+    "@jsreport/jsreport-chrome-pdf": "^3.3.0",
+    "@jsreport/jsreport-core": "^3.10.0",
+    "@jsreport/jsreport-handlebars": "^3.2.1",
+    "jsreport": "^3.10.0",
+    "puppeteer": "^19.5.2"
+  }
+}
