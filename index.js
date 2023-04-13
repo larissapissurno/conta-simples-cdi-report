@@ -4,6 +4,7 @@ jsreport.use(require("@jsreport/jsreport-chrome-pdf")());
 jsreport.use(require("@jsreport/jsreport-handlebars")());
 
 const demonstrativo = require("./demonstrativo.json");
+const { subDays, format } = require("date-fns");
 
 const demostrativoFormatado = demonstrativo
   .reduce((acc, curr) => {
@@ -15,17 +16,21 @@ const demostrativoFormatado = demonstrativo
       remunerationAmount,
       remunerationIof,
       remunerationIr,
-    }) => ({
-      remunerationDate: Intl.DateTimeFormat("pt-BR").format(
-        new Date(remunerationDate)
-      ),
-      remunerationAmount: Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      }).format(remunerationAmount),
-      remunerationIof,
-      remunerationIr,
-    })
+    }) => {
+      const dateFormat = "dd/MM/yyyy";
+      const applicationDate = subDays(new Date(remunerationDate), 1);
+
+      return {
+        applicationDate: format(applicationDate, dateFormat),
+        remunerationDate: format(new Date(remunerationDate), dateFormat),
+        remunerationAmount: Intl.NumberFormat("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }).format(remunerationAmount),
+        remunerationIof,
+        remunerationIr,
+      };
+    }
   );
 
 function ConsoleTabOutput() {
@@ -80,12 +85,14 @@ async function PdfOutput() {
   const dataTemplate = demostrativoFormatado
     .map(
       ({
+        applicationDate,
         remunerationDate,
         remunerationAmount,
         remunerationIof,
         remunerationIr,
       }) => `
       <tr>
+        <td>${applicationDate}</td>
         <td>${remunerationDate}</td>
         <td>${remunerationAmount}</td>
         <td>${remunerationIof}</td>
@@ -98,6 +105,7 @@ async function PdfOutput() {
     <table>
       <thead>
         <tr>
+          <th>Data Aplicação</th>
           <th>Data Rendimento</th>
           <th>Valor Rendimento</th>
           <th>IOF</th>
