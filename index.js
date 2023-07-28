@@ -6,32 +6,28 @@ jsreport.use(require("@jsreport/jsreport-handlebars")());
 const demonstrativo = require("./demonstrativo.json");
 const { subDays, format } = require("date-fns");
 
-const demostrativoFormatado = demonstrativo
-  .reduce((acc, curr) => {
-    return [...acc, ...curr.items];
-  }, [])
-  .map(
-    ({
-      remunerationDate,
-      remunerationAmount,
+const demostrativoFormatado = demonstrativo.items.map(
+  ({
+    remunerationDate,
+    remunerationAmount,
+    remunerationIof,
+    remunerationIr,
+  }) => {
+    const dateFormat = "dd/MM/yyyy";
+    const applicationDate = subDays(new Date(remunerationDate), 1);
+
+    return {
+      applicationDate: format(applicationDate, dateFormat),
+      remunerationDate: format(new Date(remunerationDate), dateFormat),
+      remunerationAmount: Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }).format(remunerationAmount),
       remunerationIof,
       remunerationIr,
-    }) => {
-      const dateFormat = "dd/MM/yyyy";
-      const applicationDate = subDays(new Date(remunerationDate), 1);
-
-      return {
-        applicationDate: format(applicationDate, dateFormat),
-        remunerationDate: format(new Date(remunerationDate), dateFormat),
-        remunerationAmount: Intl.NumberFormat("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        }).format(remunerationAmount),
-        remunerationIof,
-        remunerationIr,
-      };
-    }
-  );
+    };
+  }
+);
 
 function ConsoleTabOutput() {
   const jsonContent = JSON.stringify(demostrativoFormatado);
@@ -127,8 +123,11 @@ async function PdfOutput() {
     },
   });
 
+  const today = new Date();
+  const todayFormatted = format(today, "dd-MM-yyyy");
+
   await fs.writeFile(
-    "demonstrativo-cdi.pdf",
+    `demonstrativo-cdi-${todayFormatted}.pdf`,
     result.content,
     "utf8",
     function (err) {
