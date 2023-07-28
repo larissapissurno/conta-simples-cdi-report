@@ -123,16 +123,16 @@ async function PdfOutput() {
     },
   });
 
-  const today = new Date();
-  const todayFormatted = format(today, "dd-MM-yyyy");
+  const reportDate = new Date(demonstrativo.items[0].remunerationDate);
+  const dateFormatted = format(reportDate, "MM-yyyy");
 
   await fs.writeFile(
-    `demonstrativo-cdi-${todayFormatted}.pdf`,
+    `demonstrativo-cdi-${dateFormatted}.pdf`,
     result.content,
     "utf8",
     function (err) {
       if (err) {
-        console.log("An error occured while writing JSON Object to File.");
+        console.log("An error occurred while writing JSON Object to File.");
         return console.log(err);
       }
 
