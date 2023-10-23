@@ -58,6 +58,9 @@ function ConsoleTabOutput() {
 async function PdfOutput() {
   const style = `
   <style>
+    h1, p {
+      font-family: Arial, Helvetica, sans-serif;
+    }
     table {
       font-family: Arial, Helvetica, sans-serif;
       border-collapse: collapse;
@@ -84,6 +87,30 @@ async function PdfOutput() {
   </style>
   `;
 
+  /**
+   * por padrao vem em ordem decrescente
+   */
+  const dataFinal = new Date(
+    demonstrativo.items[0].remunerationDate + "T00:00:00"
+  );
+  const dataFinalFormatada = format(dataFinal, "dd/MM/yyyy");
+
+  const dataInicial = new Date(
+    demonstrativo.items[demonstrativo.items.length - 1].remunerationDate +
+      "T00:00:00"
+  );
+  const dataInicialFormatada = format(dataInicial, "dd/MM/yyyy");
+
+  const headerElement = `
+    <div>
+      <h1>Relatório de Rendimentos CDI</h1>
+
+      <p>Extrato de LS GLOBAL TECH LTDA</p>
+      <p>Período entre ${dataInicialFormatada} e ${dataFinalFormatada}<p>
+      <p>Conta número 62261443113</p>
+    </div>
+  `;
+
   const dataTemplate = demostrativoFormatado
     .map(
       ({
@@ -104,6 +131,10 @@ async function PdfOutput() {
     .join("");
 
   const template = `
+    ${headerElement}
+
+    <br />
+
     <table>
       <thead>
         <tr>
