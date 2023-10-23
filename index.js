@@ -14,11 +14,17 @@ const demostrativoFormatado = demonstrativo.items.map(
     remunerationIr,
   }) => {
     const dateFormat = "dd/MM/yyyy";
-    const applicationDate = subDays(new Date(remunerationDate), 1);
+    const applicationDate = subDays(
+      new Date(remunerationDate + "T00:00:00"),
+      1
+    );
 
     return {
       applicationDate: format(applicationDate, dateFormat),
-      remunerationDate: format(new Date(remunerationDate), dateFormat),
+      remunerationDate: format(
+        new Date(remunerationDate + "T00:00:00"),
+        dateFormat
+      ),
       remunerationAmount: Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
